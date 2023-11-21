@@ -11,4 +11,12 @@ public class ColorObject : PoolMember {
         render.material = colorData.GetMat(color);
         colorType = color;
     }
+
+    public override void OnInit() {
+        
+    }
+
+    public override void OnDespawn() {
+        base.OnDespawn();
+    }
 }
