@@ -130,9 +130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tf: {fileID: 2335753137055723190}
+  poolType: 1
   colorType: 0
   colorData: {fileID: 11400000, guid: bd4e2c67b1ca1534c8da212a7638e11b, type: 2}
   render: {fileID: 8363078326874496619}
+  stage: {fileID: 0}
 --- !u!65 &2417237125833808514
 BoxCollider:
   m_ObjectHideFlags: 0

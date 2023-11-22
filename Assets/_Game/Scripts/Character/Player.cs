@@ -7,7 +7,7 @@ public class Player : Character {
 	[SerializeField] private DynamicJoystick joystick;
 	
 	private void Update() {
-		Vector3 direct = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+		Vector3 direct = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized;
 		Vector3 nextPos = direct * moveSpeed * Time.deltaTime + tf.position;
 
 		if (CanMove(nextPos)) {

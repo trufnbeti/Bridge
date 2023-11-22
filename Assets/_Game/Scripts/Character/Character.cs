@@ -10,6 +10,7 @@ public class Character : ColorObject {
     [SerializeField] private Animator anim;
     [SerializeField] protected Transform playerModel;
     [SerializeField] protected float moveSpeed;
+    [HideInInspector] public Stage stage;
     
 
     private string currentAnim = Anim.idle.ToString();
@@ -22,10 +23,17 @@ public class Character : ColorObject {
     }
 
     public void AddBrick() {
-        PlayerBrick playerBrick = Pool.Ins.Spawn<PlayerBrick>(PoolType.PlayerBrick, bricksParent.position + Vector3.up * BricksCount * Constant.PLAYER_BRICK_HEIGHT, transform.rotation);
+        PlayerBrick playerBrick = SimplePool.Spawn<PlayerBrick>(PoolType.PlayerBrick, bricksParent.position + Vector3.up * BricksCount * Constant.PLAYER_BRICK_HEIGHT, playerModel.rotation);
         playerBrick.ChangeColor(colorType);
         playerBrick.transform.SetParent(bricksParent);
         playerBricks.Push(playerBrick);
+    }
+
+    public void RemoveBrick() {
+        if (BricksCount > 0) {
+            PlayerBrick playerBrick = playerBricks.Pop();
+            SimplePool.Despawn(playerBrick);
+        }
     }
 
     protected Vector3 CheckGround(Vector3 nextPos) {
@@ -42,8 +50,15 @@ public class Character : ColorObject {
         RaycastHit hit;
         if (Physics.Raycast(nextpos, Vector3.down, out hit, Mathf.Infinity, stairLayer)) {
             BridgeBrick bridgeBrick = CacheComponent.GetBridgeBrick(hit.collider);
+            
+            if (bridgeBrick.colorType != colorType && playerBricks.Count > 0)
+            {
+                bridgeBrick.ChangeColor(colorType);
+                RemoveBrick();
+                stage.NewBrick(colorType);
+            }
 
-            if (bridgeBrick.colorType != colorType && BricksCount == 0 && playerModel.forward.z > 0) return false;
+            if (bridgeBrick.colorType != colorType && playerBricks.Count == 0 && playerModel.forward.z > 0) return false;
         }
 
         return true;
@@ -57,6 +72,4 @@ public class Character : ColorObject {
             anim.SetTrigger(currentAnim);
         }
     }
-
-
 }

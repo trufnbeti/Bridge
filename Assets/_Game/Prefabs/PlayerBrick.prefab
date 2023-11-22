@@ -96,8 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa162e1f973852e45a0b53eacc6dae81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolType: 0
   tf: {fileID: 3643633867837006492}
+  poolType: 4
   colorType: 0
   colorData: {fileID: 11400000, guid: bd4e2c67b1ca1534c8da212a7638e11b, type: 2}
-  renderer: {fileID: 0}
+  render: {fileID: 6106398683636716598}
