@@ -7,8 +7,8 @@ public class PlatformBrick : ColorObject {
 	[HideInInspector] public Stage stage;
 
 	public override void OnDespawn() {
+		base.OnDespawn();
 		stage.RemoveBrick(this);
-		SimplePool.Despawn(this);
 	}
 
 	private void OnTriggerEnter(Collider other) {

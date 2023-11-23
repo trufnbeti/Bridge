@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Character : ColorObject {
     [SerializeField] private LayerMask groungLayer;
@@ -15,6 +16,7 @@ public class Character : ColorObject {
 
     private string currentAnim = Anim.idle.ToString();
     private Stack<PlayerBrick> playerBricks = new Stack<PlayerBrick>();
+    public bool isOnBridge = false;
 
     public int BricksCount => playerBricks.Count;
 
@@ -37,22 +39,31 @@ public class Character : ColorObject {
     }
 
     protected Vector3 CheckGround(Vector3 nextPos) {
+        Vector3 res = tf.position;
         RaycastHit hit;
 
+
         if (Physics.Raycast(nextPos, Vector3.down, out hit, Mathf.Infinity, groungLayer)) {
-            return hit.point + Vector3.up;
+            res = hit.point + Vector3.up;
+            // return hit.point + Vector3.up;
         }
 
-        return tf.position;
+        isOnBridge = Physics.Raycast(tf.position, Vector3.down, out hit, Mathf.Infinity, stairLayer) ? true : false;
+
+        if (Physics.Raycast(nextPos, Vector3.down, Mathf.Infinity, stairLayer) && playerModel.forward.z < 0 && !isOnBridge) {
+            res = tf.position;
+        }
+
+        return res;
     }
 
     protected bool CanMove(Vector3 nextpos) {
         RaycastHit hit;
         if (Physics.Raycast(nextpos, Vector3.down, out hit, Mathf.Infinity, stairLayer)) {
+            
             BridgeBrick bridgeBrick = CacheComponent.GetBridgeBrick(hit.collider);
             
-            if (bridgeBrick.colorType != colorType && playerBricks.Count > 0)
-            {
+            if (bridgeBrick.colorType != colorType && playerBricks.Count > 0 && playerModel.forward.z > 0) {
                 bridgeBrick.ChangeColor(colorType);
                 RemoveBrick();
                 stage.NewBrick(colorType);

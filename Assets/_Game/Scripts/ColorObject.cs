@@ -10,13 +10,20 @@ public class ColorObject : PoolMember {
     public void ChangeColor(ColorType color) {
         render.material = colorData.GetMat(color);
         colorType = color;
+        if (!render.enabled) {
+            render.enabled = true;
+        }
+
+        if (color == ColorType.None) {
+            render.enabled = false;
+        }
     }
 
     public override void OnInit() {
         
     }
-
+    
     public override void OnDespawn() {
-        base.OnDespawn();
+        SimplePool.Despawn(this);
     }
 }

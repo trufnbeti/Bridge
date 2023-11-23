@@ -397,6 +397,7 @@ MonoBehaviour:
   playerModel: {fileID: 1008680292}
   moveSpeed: 7
   stage: {fileID: 0}
+  isOnBridge: 0
   joystick: {fileID: 1847914524}
 --- !u!136 &58472320
 CapsuleCollider:
@@ -4371,42 +4372,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 580112897}
     m_Modifications:
-    - target: {fileID: 2047300719174502059, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3039788093827855456, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253461244283323, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253461478722226, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253461884662464, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253462058777446, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253462096178432, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3150253462554231497, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4795696243045739482, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4795696244780167964, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -4454,10 +4419,6 @@ PrefabInstance:
     - target: {fileID: 4795696244780167965, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
       propertyPath: m_Name
       value: Bridge
-      objectReference: {fileID: 0}
-    - target: {fileID: 7960386930295038332, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
-      propertyPath: colorType
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e63f9fb7f5d0394ebf6488bee48a9b4, type: 3}
