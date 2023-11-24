@@ -27,7 +27,8 @@ public enum PoolType {
 	PlatformBrick = 1,
 	BridgeBrick = 2,
 	DropBrick = 3,
-	PlayerBrick = 4
+	PlayerBrick = 4,
+	Enemy
 }
 
 public enum ParticleType

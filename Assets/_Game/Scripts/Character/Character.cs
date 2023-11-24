@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,18 +17,20 @@ public class Character : ColorObject {
 
     private string currentAnim = Anim.idle.ToString();
     private Stack<PlayerBrick> playerBricks = new Stack<PlayerBrick>();
-    public bool isOnBridge = false;
+    private bool isOnBridge = false;
 
     public int BricksCount => playerBricks.Count;
 
     public override void OnInit() {
+        ClearBrick();
         playerModel.rotation = Quaternion.identity;
     }
 
     public void AddBrick() {
-        PlayerBrick playerBrick = SimplePool.Spawn<PlayerBrick>(PoolType.PlayerBrick, bricksParent.position + Vector3.up * BricksCount * Constant.PLAYER_BRICK_HEIGHT, playerModel.rotation);
+        PlayerBrick playerBrick = SimplePool.Spawn<PlayerBrick>(PoolType.PlayerBrick, bricksParent);
         playerBrick.ChangeColor(colorType);
-        playerBrick.transform.SetParent(bricksParent);
+        playerBrick.transform.localPosition = Vector3.up * BricksCount * Constant.PLAYER_BRICK_HEIGHT;
+        playerBrick.transform.SetParent(bricksParent, false);
         playerBricks.Push(playerBrick);
     }
 
@@ -35,6 +38,15 @@ public class Character : ColorObject {
         if (BricksCount > 0) {
             PlayerBrick playerBrick = playerBricks.Pop();
             SimplePool.Despawn(playerBrick);
+        }
+    }
+    
+    public void ChangeAnim(Anim ani) {
+        string animName = ani.ToString();
+        if (currentAnim != animName) {
+            anim.ResetTrigger(currentAnim);
+            currentAnim = animName;
+            anim.SetTrigger(currentAnim);
         }
     }
 
@@ -66,7 +78,7 @@ public class Character : ColorObject {
             if (bridgeBrick.colorType != colorType && playerBricks.Count > 0 && playerModel.forward.z > 0) {
                 bridgeBrick.ChangeColor(colorType);
                 RemoveBrick();
-                stage.NewBrick(colorType);
+                stage.SpawnBrick(colorType);
             }
 
             if (bridgeBrick.colorType != colorType && playerBricks.Count == 0 && playerModel.forward.z > 0) return false;
@@ -75,12 +87,10 @@ public class Character : ColorObject {
         return true;
     }
 
-    protected void ChangeAnim(Anim ani) {
-        string animName = ani.ToString();
-        if (currentAnim != animName) {
-            anim.ResetTrigger(currentAnim);
-            currentAnim = animName;
-            anim.SetTrigger(currentAnim);
+    private void ClearBrick() {
+        while (playerBricks.Count > 0) {
+            PlayerBrick playerBrick = playerBricks.Pop();
+            SimplePool.Despawn(playerBrick);
         }
     }
 }

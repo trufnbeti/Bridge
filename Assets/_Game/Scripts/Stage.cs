@@ -8,13 +8,12 @@ public class Stage : MonoBehaviour {
 	private List<Vector3> emptyPoint = new List<Vector3>();
 	private List<PlatformBrick> bricks = new List<PlatformBrick>();
 
-	private void Start() {
-		for (int i = -Constant.BRICK_ROWS  + 1; i  < Constant.BRICK_ROWS; i += 2) {
-			for (int j = -Constant.BRICK_COLS  + 1; j  < Constant.BRICK_COLS; j += 2) {
+	private void Awake() {
+		for (float i = -Constant.BRICK_ROWS  + 1; i  < Constant.BRICK_ROWS; i += Constant.SPACE_BETWEEN_PLATFORM_BRICK) {
+			for (float j = -Constant.BRICK_COLS  + 1; j  < Constant.BRICK_COLS; j += Constant.SPACE_BETWEEN_PLATFORM_BRICK) {
 				brickPoints.Add(bricksParent.position + new Vector3(i, 0, j));
 			}
 		}
-		OnInit();
 	}
 
 	public void OnInit() {
@@ -24,14 +23,13 @@ public class Stage : MonoBehaviour {
 	}
 
 	public void InitColor(ColorType colorType) {
-		int amount = brickPoints.Count;
+		int amount = brickPoints.Count / LevelManager.Ins.NumCharacter;
 
-		for (int i = 0; i < amount; i++)
-		{
-			NewBrick(colorType);
+		for (int i = 0; i < amount; ++i) {
+			SpawnBrick(colorType);
 		}
 	}
-	public void NewBrick(ColorType colorType)
+	public void SpawnBrick(ColorType colorType)
 	{
 		if (emptyPoint.Count > 0)
 		{
@@ -49,6 +47,14 @@ public class Stage : MonoBehaviour {
 	{
 		emptyPoint.Add(brick.tf.position);
 		bricks.Remove(brick);
+	}
+
+	public PlatformBrick FindBrick(ColorType colorType) {
+		foreach (var brick in bricks) {
+			if (brick.colorType == colorType) return brick;
+		}
+
+		return null;
 	}
 
 }

@@ -272,7 +272,7 @@ public static class SimplePool
         unit.tf.SetParent(parent);
         unit.tf.localPosition = localPoint;
         unit.tf.localRotation = localRot;
-        unit.tf.localScale = Vector3.one;
+        // unit.tf.localScale = Vector3.one;
         memberInParent.Add(unit.GetInstanceID());
         return unit;
     }
