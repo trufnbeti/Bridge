@@ -34,8 +34,10 @@ public class CollectState : IState<Enemy> {
             PlatformBrick platformBrick = enemy.stage.FindBrick(enemy.colorType);
 
             if (platformBrick == null) {
-                //hết brick, đi đến đích
-                enemy.ChangeState(new MoveFinishState());
+                for (int i = 0; i < brick; ++i) {
+                    enemy.stage.SpawnBrick(enemy.colorType);
+                }
+                FindBrick(enemy);
             } else {
                 enemy.SetDestination(platformBrick.tf.position);
             }

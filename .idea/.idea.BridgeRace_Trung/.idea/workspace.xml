@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d0810cd-fcb2-4e18-95a6-99c010dc08e5" name="Changes" comment="" />
+    <list default="true" id="4d0810cd-fcb2-4e18-95a6-99c010dc08e5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.BridgeRace_Trung/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BridgeRace_Trung/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Game/Scripts/Character/StateMachine/CollectState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Game/Scripts/Character/StateMachine/CollectState.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -147,7 +150,7 @@
       <workItem from="1701152130562" duration="8340000" />
       <workItem from="1701229235023" duration="4870000" />
       <workItem from="1701239349050" duration="4658000" />
-      <workItem from="1701246278607" duration="820000" />
+      <workItem from="1701246278607" duration="1740000" />
     </task>
     <servers />
   </component>
