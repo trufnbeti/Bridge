@@ -24,6 +24,4 @@ MonoBehaviour:
   - colorType: 6
     mat: {fileID: 2100000, guid: ce9c0e3b481cc8f448b02c8d2eaf8379, type: 2}
   - colorType: 1
-    mat: {fileID: 2100000, guid: 7eed601fd7518e84eac9362858dfd912, type: 2}
-  - colorType: 7
     mat: {fileID: 2100000, guid: b2077e46d0f409f4d9b89468bb6dd66a, type: 2}

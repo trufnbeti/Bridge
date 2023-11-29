@@ -11,19 +11,33 @@ public class Character : ColorObject {
     [SerializeField] private Transform bricksParent;
     [SerializeField] private Animator anim;
     [SerializeField] protected Transform playerModel;
-    [SerializeField] protected float moveSpeed;
     [HideInInspector] public Stage stage;
     
+    protected bool isFalling = false;
 
     private string currentAnim = Anim.idle.ToString();
     private Stack<PlayerBrick> playerBricks = new Stack<PlayerBrick>();
-    private bool isOnBridge = false;
+    private bool  isOnBridge = false;
+
+    public bool IsOnBridge => isOnBridge;
+    public bool IsFalling {
+        get => isFalling;
+        set => isFalling = value;
+    }
 
     public int BricksCount => playerBricks.Count;
 
     public override void OnInit() {
         ClearBrick();
         playerModel.rotation = Quaternion.identity;
+        ChangeAnim(Anim.idle);
+    }
+    
+    private void OnEnable() {
+        EventManager.OnEventEmitted += OnEventEmitted;
+    }
+    private void OnDisable() {
+        EventManager.OnEventEmitted -= OnEventEmitted;
     }
 
     public void AddBrick() {
@@ -57,10 +71,7 @@ public class Character : ColorObject {
 
         if (Physics.Raycast(nextPos, Vector3.down, out hit, Mathf.Infinity, groungLayer)) {
             res = hit.point + Vector3.up;
-            // return hit.point + Vector3.up;
         }
-
-        isOnBridge = Physics.Raycast(tf.position, Vector3.down, out hit, Mathf.Infinity, stairLayer) ? true : false;
 
         if (Physics.Raycast(nextPos, Vector3.down, Mathf.Infinity, stairLayer) && playerModel.forward.z < 0 && !isOnBridge) {
             res = tf.position;
@@ -69,9 +80,11 @@ public class Character : ColorObject {
         return res;
     }
 
-    protected bool CanMove(Vector3 nextpos) {
+    protected bool CanMove(Vector3 pos) {
+        bool res = true;
+        isOnBridge = Physics.Raycast(tf.position, Vector3.down, Mathf.Infinity, stairLayer) ? true : false;
         RaycastHit hit;
-        if (Physics.Raycast(nextpos, Vector3.down, out hit, Mathf.Infinity, stairLayer)) {
+        if (Physics.Raycast(pos, Vector3.down, out hit, Mathf.Infinity, stairLayer)) {
             
             BridgeBrick bridgeBrick = CacheComponent.GetBridgeBrick(hit.collider);
             
@@ -81,16 +94,50 @@ public class Character : ColorObject {
                 stage.SpawnBrick(colorType);
             }
 
-            if (bridgeBrick.colorType != colorType && playerBricks.Count == 0 && playerModel.forward.z > 0) return false;
+            if (bridgeBrick.colorType != colorType && playerBricks.Count == 0 && playerModel.forward.z > 0) {
+                res = false;
+            }
         }
 
-        return true;
+        return res;
+    }
+
+    protected virtual void OnFalling() {
+        while (BricksCount > 0) {
+            SimplePool.Spawn<DropBrick>(PoolType.DropBrick, transform.position, Quaternion.identity);
+            RemoveBrick();
+        }
+        isFalling = true;
+        ChangeAnim(Anim.fall);
     }
 
     private void ClearBrick() {
-        while (playerBricks.Count > 0) {
+        while (BricksCount > 0) {
             PlayerBrick playerBrick = playerBricks.Pop();
             SimplePool.Despawn(playerBrick);
+        }
+    }
+
+    private void OnFinish() {
+        OnInit();
+        ChangeAnim(Anim.dance);
+    }
+    
+    private void OnEventEmitted(EventID eventID) {
+        switch (eventID) {
+            case EventID.Finish:
+                OnFinish();
+                break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag(GameTag.Player.ToString())) {
+            Character character = CacheComponent.GetCharacter(other);
+            if (BricksCount < character.BricksCount && !isOnBridge) {
+                OnFalling();
+                ClearBrick();
+            }
         }
     }
 }

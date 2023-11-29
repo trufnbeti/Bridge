@@ -10,43 +10,78 @@ public class LevelManager : Singleton<LevelManager>
 
     public Vector3 FinishPoint => currentLevel.finishPoint.position;
     private int currentLevelIndex;
-
+    
     private Level currentLevel;
     public int NumCharacter => currentLevel.numBot + 1;
 
     public int CurrentLevelIndex => currentLevelIndex;
 
     private void Awake() {
-        currentLevelIndex = 1;
+        currentLevelIndex = Pref.Level;
     }
 
     private void Start() {
-        LoadLevel(currentLevelIndex);
+        OnReset();
+    }
+    
+    private void OnEnable() {
+        EventManager.OnEventEmitted += OnEventEmitted;
+    }
+    private void OnDisable() {
+        EventManager.OnEventEmitted -= OnEventEmitted;
     }
 
     public void OnInit() {
         //init character pos
         List<Vector3> startPoints = new List<Vector3>();
-        for (float i = -NumCharacter + 1; i < NumCharacter; i += Constant.SPACE_BETWEEN_CHARACTER) {
+        for (int i = -NumCharacter + 1; i < NumCharacter; i += 2) {
             startPoints.Add(currentLevel.startPoint.position + new Vector3(i, 0, 0));
         }
         //udpate navmesh
         NavMesh.RemoveAllNavMeshData();
         NavMesh.AddNavMeshData(currentLevel.navMeshData);
         
-        //random color
+        //init color for character
         List<ColorType> colors = new List<ColorType>();
-        List<ColorType> exceptColors = new List<ColorType>();
-        exceptColors.Add(ColorType.Grey);
-        exceptColors.Add(ColorType.None);
-        exceptColors.Add(ColorType.White);
-        ;
-        while (colors.Count < 4) {
+        List<ColorType> exceptColors = new List<ColorType>() { ColorType.Grey, ColorType.None};
+        
+        while (colors.Count < NumCharacter) {
             ColorType colorType = RandomColor();
             if (!colors.Contains(colorType) && !exceptColors.Contains(colorType)) {
                 colors.Add(colorType);
             }
-        };
+        }
+        
+        //random pos & color player
+        int rand = UnityEngine.Random.Range(0, NumCharacter);
+        GameManager.Ins.player.tf.position = startPoints[rand];
+        GameManager.Ins.player.tf.rotation = Quaternion.identity;
+        GameManager.Ins.player.ChangeColor(colors[rand]);
+        startPoints.RemoveAt(rand);
+        colors.RemoveAt(rand);
+        
+        GameManager.Ins.player.OnInit();
+        
+        //init enemy
+        for (int i = 0; i < currentLevel.numBot; ++i) {
+            Enemy enemy = SimplePool.Spawn<Enemy>(PoolType.Enemy, startPoints[i], Quaternion.identity);
+            enemy.ChangeColor(colors[i]);
+            enemy.OnInit();
+            GameManager.Ins.AddEnemy(enemy);
+        }
+        
+
+    }
+
+    public void OnReset() {
+        LoadLevel(currentLevelIndex);
+        OnInit();
+    }
+
+    private void OnNextLevel() {
+        currentLevelIndex = currentLevelIndex % levels.Count + 1;
+        PlayerPrefs.SetInt(PrefKey.Level.ToString(), currentLevelIndex);
+        EventManager.EmitEvent(EventID.Reset);
     }
 
     private ColorType RandomColor() {
@@ -58,10 +93,22 @@ public class LevelManager : Singleton<LevelManager>
 
     private void LoadLevel(int index) {
         if (currentLevel != null) {
-            Destroy(currentLevel);
+            Destroy(currentLevel.gameObject);
         }
-
+        
         currentLevel = Instantiate(levels[index - 1]);
         currentLevel.OnInit();
     }
+    
+    private void OnEventEmitted(EventID eventID) {
+        switch (eventID) {
+            case EventID.Reset: 
+                OnReset();
+                break;
+            case EventID.NextLevel: //next level = tang level + event reset
+                OnNextLevel();
+                break;
+        }
+    }
+
 }

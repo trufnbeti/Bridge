@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Stage : MonoBehaviour {
 	[SerializeField] private Transform bricksParent;
+	
 	private List<Vector3> brickPoints = new List<Vector3>();
 	private List<Vector3> emptyPoint = new List<Vector3>();
 	private List<PlatformBrick> bricks = new List<PlatformBrick>();
 
 	private void Awake() {
-		for (float i = -Constant.BRICK_ROWS  + 1; i  < Constant.BRICK_ROWS; i += Constant.SPACE_BETWEEN_PLATFORM_BRICK) {
-			for (float j = -Constant.BRICK_COLS  + 1; j  < Constant.BRICK_COLS; j += Constant.SPACE_BETWEEN_PLATFORM_BRICK) {
+		int levelIndex = Pref.Level;
+		for (int i = -Constant.COLS[levelIndex - 1] + 1; i  < Constant.COLS[levelIndex - 1]; i += 2) {
+			for (int j = -Constant.ROWS[levelIndex - 1] + 1; j  < Constant.ROWS[levelIndex - 1]; j += 2) {
 				brickPoints.Add(bricksParent.position + new Vector3(i, 0, j));
 			}
 		}
 	}
 
 	public void OnInit() {
-		foreach (var item in brickPoints) {
-			emptyPoint.Add(item);	
+		for (int i = 0; i < brickPoints.Count; ++i) {
+			emptyPoint.Add(brickPoints[i]);
 		}
 	}
 
@@ -50,11 +52,14 @@ public class Stage : MonoBehaviour {
 	}
 
 	public PlatformBrick FindBrick(ColorType colorType) {
-		foreach (var brick in bricks) {
-			if (brick.colorType == colorType) return brick;
+		PlatformBrick res = null;
+		for (int i = 0; i < bricks.Count; ++i) {
+			if (bricks[i].colorType == colorType) {
+				res = bricks[i];
+			}
 		}
 
-		return null;
+		return res;
 	}
 
 }

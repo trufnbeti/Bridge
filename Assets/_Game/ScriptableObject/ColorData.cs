@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,9 +14,9 @@ public class ColorData : ScriptableObject {
     private Dictionary<ColorType, Material> listColors = new Dictionary<ColorType, Material>();
 
     private void OnEnable() {
-        foreach (var item in colors) {
-            if (!listColors.ContainsKey(item.colorType)) {
-                listColors.Add(item.colorType, item.mat);
+        for (int i = 0; i < colors.Length; ++i) {
+            if (!listColors.ContainsKey(colors[i].colorType)) {
+                listColors.Add(colors[i].colorType, colors[i].mat);
             }
         }
     }

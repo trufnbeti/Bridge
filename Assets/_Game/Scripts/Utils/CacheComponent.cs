@@ -22,4 +22,14 @@ public class CacheComponent {
 
         return bridgeBricks[col];
     }
+
+    private static Dictionary<float, WaitForSeconds> WFS = new Dictionary<float, WaitForSeconds>();
+
+    public static WaitForSeconds GetWFS(float time) {
+        if (!WFS.ContainsKey(time)) {
+            WFS.Add(time, new WaitForSeconds(time));
+        }
+
+        return WFS[time];
+    }
 }

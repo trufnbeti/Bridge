@@ -8,15 +8,14 @@ public class ColorObject : PoolMember {
     [SerializeField] private Renderer render;
 
     public void ChangeColor(ColorType color) {
-        render.material = colorData.GetMat(color);
-        colorType = color;
-        if (!render.enabled) {
-            render.enabled = true;
-        }
-
         if (color == ColorType.None) {
             render.enabled = false;
+        } else {
+            render.material = colorData.GetMat(color);
+            render.enabled = true;
         }
+        colorType = color;
+
     }
 
     public override void OnInit() {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,9 +9,14 @@ public class DynamicJoystick : Joystick
     public float MoveThreshold { get { return moveThreshold; } set { moveThreshold = Mathf.Abs(value); } }
 
     [SerializeField] private float moveThreshold = 1;
+    private RectTransform rectTransform;
 
-    protected override void Start()
-    {
+    private void Awake() {
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    protected override void Start() {
+        rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
         MoveThreshold = moveThreshold;
         base.Start();
         background.gameObject.SetActive(false);
@@ -19,7 +25,7 @@ public class DynamicJoystick : Joystick
     public override void OnPointerDown(PointerEventData eventData)
     {
         background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-        background.gameObject.SetActive(true);
+        // background.gameObject.SetActive(true);
         base.OnPointerDown(eventData);
     }
 

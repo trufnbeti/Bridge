@@ -8,18 +8,25 @@ public enum GameTag {
 
 public enum Anim {
 	idle = 0,
-	run = 1
+	run = 1,
+	dance = 2,
+	fall = 3
+}
+
+public enum GameState {
+	MainMenu = 0,
+	GamePlay = 1,
+	Pause = 2
 }
 
 public enum ColorType {
 	None = 0,
-	White = 1,
+	Yellow = 1,
 	Grey = 2,
 	Blue = 3,
 	Green = 4,
 	Orange = 5,
-	Red = 6,
-	Yellow = 7
+	Red = 6
 }
 
 public enum PoolType {
@@ -29,6 +36,19 @@ public enum PoolType {
 	DropBrick = 3,
 	PlayerBrick = 4,
 	Enemy
+}
+
+public enum EventID {
+	Start = 0,
+	Finish = 1,
+	Reset = 2,
+	NextLevel = 3,
+	Win = 4,
+	Lose = 5
+}
+
+public enum PrefKey {
+	Level = 1
 }
 
 public enum ParticleType

@@ -6,24 +6,34 @@ public class CollectState : IState<Enemy> {
 
     private int brick;
     public void OnEnter(Enemy enemy) {
-        enemy.ChangeAnim(Anim.idle);
+        enemy.StopMove();
         int currentLevel = LevelManager.Ins.CurrentLevelIndex;
-        brick = Random.Range(Constant.MIN_BRICK_TO_BUILD[currentLevel], 9);
+        brick = Random.Range(Constant.MIN_BRICK_TO_BUILD[currentLevel - 1], 9);
+        FindBrick(enemy);
     }
 
     public void OnExcute(Enemy enemy) {
-        throw new System.NotImplementedException();
+        if (enemy.CanDestination) {
+            enemy.StopMove();
+            if (enemy.BricksCount >= brick)
+            {
+                enemy.ChangeState(new MoveFinishState());
+            }
+            else
+            {
+                FindBrick(enemy);
+            }
+            
+        }
     }
 
-    public void OnExit(Enemy enemy) {
-        throw new System.NotImplementedException();
-    }
+    public void OnExit(Enemy enemy) { }
 
     private void FindBrick(Enemy enemy) {
         if (enemy.stage != null) {
             PlatformBrick platformBrick = enemy.stage.FindBrick(enemy.colorType);
 
-            if (platformBrick != null) {
+            if (platformBrick == null) {
                 //hết brick, đi đến đích
                 enemy.ChangeState(new MoveFinishState());
             } else {

@@ -14,7 +14,8 @@ public class PlatformBrick : ColorObject {
 	private void OnTriggerEnter(Collider other) {
 		if (other.CompareTag(GameTag.Player.ToString())) {
 			Character character = CacheComponent.GetCharacter(other);
-			if (colorType == character.colorType) {
+			
+			if (colorType == character.colorType && !character.IsFalling) {
 				character.AddBrick();
 				OnDespawn();
 			}

@@ -13,8 +13,8 @@ public class Level : MonoBehaviour
     public Transform finishPoint;
     
     public void OnInit() {
-        foreach (var stage in stages) {
-            stage.OnInit();
+        for (int i = 0; i < stages.Count; ++i) {
+            stages[i].OnInit();
         }
     }
 

@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveFinishState : IState<Enemy>
-{
+public class MoveFinishState : IState<Enemy> {
     public void OnEnter(Enemy enemy) {
         enemy.SetDestination(LevelManager.Ins.FinishPoint);
     }
@@ -14,7 +13,5 @@ public class MoveFinishState : IState<Enemy>
         }
     }
 
-    public void OnExit(Enemy enemy) {
-        throw new System.NotImplementedException();
-    }
+    public void OnExit(Enemy enemy) { }
 }
