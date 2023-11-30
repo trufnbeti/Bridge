@@ -34,6 +34,4 @@ public class UIGamePlay : UICanvas
         GameManager.Ins.ChangeState(GameState.Pause);
         UIManager.Ins.OpenUI<UISetting>();
     }
-    
-    
 }
