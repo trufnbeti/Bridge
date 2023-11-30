@@ -875,7 +875,7 @@ MonoBehaviour:
   - {fileID: 7438509330247450736}
   - {fileID: 4199142874135128950}
   - {fileID: 4199142874558252369}
-  navMeshData: {fileID: 23800000, guid: 8c7368c03b530c54fba12d6afdcd06db, type: 2}
+  navMeshData: {fileID: 23800000, guid: 2cea0b627576d4344ae15cae454e4361, type: 2}
   numBot: 3
   startPoint: {fileID: 6635365868658765259}
   finishPoint: {fileID: 3398203249923883991}
@@ -907,7 +907,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 8c7368c03b530c54fba12d6afdcd06db, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 2cea0b627576d4344ae15cae454e4361, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &7193393682396742183
 GameObject:
